@@ -13,9 +13,9 @@ export const getProducts = async (req, res) => {
 
 // Crear un nuevo producto
 export const createProduct = async (req, res) => {
-  const { name, description, price, stock, imageUrl } = req.body;
+  const { name, description, price, stock, imageUrl, category } = req.body;
 
-  if (!name || !description || !price || !stock) {
+  if (!name || !description || !price || !stock || !category) {
     return res.status(400).json({ message: "Faltan campos obligatorios" });
   }
 
@@ -31,6 +31,7 @@ export const createProduct = async (req, res) => {
       price,
       stock,
       imageUrl,
+      category,
       status: true,
       creationDate: new Date(),
     });
@@ -45,7 +46,7 @@ export const createProduct = async (req, res) => {
 // Actualizar un producto
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, stock, imageUrl } = req.body;
+  const { name, description, price, stock, imageUrl, category } = req.body;
 
   try {
     const product = await Product.findByPk(id);
@@ -67,6 +68,7 @@ export const updateProduct = async (req, res) => {
       price: price || product.price,
       stock: stock || product.stock,
       imageUrl: imageUrl || product.imageUrl,
+      category: category || product.category,
     });
 
     return res.status(200).json({ message: "Producto actualizado correctamente", data: product });
